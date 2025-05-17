@@ -1,15 +1,98 @@
-# Graduation Project: Minecraft Server Scaling on Kubernetes
+# 자동확장과 로드밸런싱을 활용한 게임 서버 관리 시스템
 
-본 프로젝트는 쿠버네티스를 활용하여 마인크래프트 서버에 자동 확장 및 로드밸런싱 기능을 적용한 시스템입니다. 과부하 시 서버를 자동으로 확장하여 트래픽을 분산시키고, 불필요할 경우 서버를 줄여 자원을 효율적으로 관리합니다.
+본 프로젝트는 Kubernetes 환경에서 Minecraft 게임 서버를 자동으로 확장하고, 트래픽을 분산 처리하여 서버 과부하 문제를 해결하는 시스템을 구현한 졸업 작품입니다.
 
-## 주요 구성
-- Kubernetes Cluster (3 nodes)
-- Minecraft Server as a Pod
+---
+
+## 프로젝트 목표
+
+- 트래픽 증가 시 서버 과부하 현상 완화
+- Kubernetes HPA를 통한 게임 서버 자동 확장
+- 로드밸런서(Service)를 이용한 유저 트래픽 분산
+- 실시간 대시보드를 통한 서버 상태 시각화
+
+---
+
+## 시스템 아키텍처
+
+- VirtualBox에 Ubuntu VM 3대 구성 (kubeadm으로 클러스터 구축)
+  - master 1대 + worker 2대
+- Minecraft 서버를 Kubernetes Deployment로 배포
+- CPU 부하 기반 HPA 구성
+- LoadBalancer Service를 통한 외부 연결
+- Prometheus + Grafana로 실시간 모니터링
+- 봇 (bot.js)으로 트래픽 시뮬레이션
+
+![아키텍처 다이어그램](./infrastructure/k8s-cluster-structure.png)
+
+---
+
+
+## 실행 시나리오
+
+1. **기본 상태**  
+   - Minecraft 서버 1개만 실행됨 (Pod 1개)  
+   - TPS 정상 유지
+
+2. **트래픽 증가**  
+   - 봇 접속 부하 유도  
+   - CPU 사용률 상승 → HPA 감지
+
+3. **자동 확장**  
+   - Pod가 1개 → 2개 이상으로 자동 증가  
+   - 로드밸런서가 트래픽 분산
+
+4. **TPS 회복 확인**  
+   - Grafana 대시보드에서 TPS 회복 및 Pod 증가 시각화
+
+5. **부하 종료 → Pod 축소**  
+   - CPU 사용률 하락  
+   - 자동으로 Pod 수 축소
+
+---
+
+## 모니터링
+
+- **Grafana 대시보드**를 통해 다음 항목을 시각화함:
+  - TPS 그래프
+  - Pod 수 변화
+  - CPU 사용률
+  - 봇 접속 수
+
+---
+
+## 팀원 기여도
+
+### 길도희
+- kubeadm 클러스터 구축
+- Minecraft 서버 배포 및 HPA 설정
+- 모니터링 시스템 구축 (Grafana/Prometheus)
+- 전체 시스템 아키텍처 설계
+
+### 김다연
+- 마인크래프트 봇 자동 접속 봇 제작 (`bot.js`)
+- Dockerfile 작성 및 컨테이너화
+- 트래픽 시나리오 설계 및 부하 테스트
+- 증빙자료 구성 및 시연 준비
+
+---
+
+## 주요 기술 스택
+
+- Kubernetes (kubeadm)
+- Docker
+- itzg/minecraft-server
 - HPA (Horizontal Pod Autoscaler)
-- LoadBalancer Service
-- Grafana + Prometheus 모니터링
-- 마인크래프트 봇 자동 접속 (부하 생성)
+- Prometheus + Grafana
+- Node.js (Minecraft 봇)
 
-## 팀원
-- 길도희: 클러스터 구축, 마크 서버 배포, HPA 구성, 모니터링 대시보드
-- 최다연: 봇 자동 접속, 부하 테스트 스크립트, YAML 관리, 시연 구성
+
+---
+
+## 결론
+
+- 본 시스템은 실제 유저 트래픽 시나리오를 기반으로 자동확장과 부하분산의 효과를 직접 확인할 수 있도록 구성되었습니다.
+- Kubernetes의 자원 관리 기능을 활용한 실시간 대응 구조를 시각적으로 보여주는 데 초점을 맞추었습니다.
+
+
+
