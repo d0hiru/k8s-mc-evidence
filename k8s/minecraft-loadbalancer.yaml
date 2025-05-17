@@ -1,0 +1,22 @@
+# 1. MetalLB 설치 (한 번만 적용하면 됨)
+# kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.10/config/manifests/metallb-native.yaml
+
+---
+# 2. IPAddressPool: MetalLB가 외부에 할당할 수 있는 IP 범위
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: my-ip-pool
+  namespace: metallb-system
+spec:
+  addresses:
+    - 10.100.0.200-10.100.0.210
+
+---
+# 3. L2Advertisement: 같은 서브넷에서 L2 브로드캐스트로 IP 알림
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: l2adv
+  namespace: metallb-system
+
