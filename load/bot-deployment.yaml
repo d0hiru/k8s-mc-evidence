@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft-bot
+spec:
+  replicas: 5 # 필요한 만큼 봇 수 조절 가능!
+  selector:
+    matchLabels:
+      app: minecraft-bot
+  template:
+    metadata:
+      labels:
+        app: minecraft-bot
+    spec:
+      containers:
+      - name: minecraft-bot
+        image: mc-bot:latest
+        imagePullPolicy: Never  # 로컬에서만 이미지 사용
+        env:
+        - name: MC_HOST
+          value: "minecraft-service.default.svc.cluster.local"
+        - name: MC_PORT
+          value: "25565"
