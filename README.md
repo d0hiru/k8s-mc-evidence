@@ -23,7 +23,7 @@
 - Prometheus + Grafana로 실시간 모니터링
 - 봇 (bot.js)으로 트래픽 시뮬레이션
 
-![아키텍처 다이어그램](./infrastructure/k8s-cluster-structure.png)
+![아키텍처 다이어그램](./infrastructure/cluster-structure.png)
 
 ---
 
