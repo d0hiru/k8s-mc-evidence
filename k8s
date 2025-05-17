@@ -1,1 +1,63 @@
-
+k8s/minecraft-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft
+  template:
+    metadata:
+      labels:
+        app: minecraft
+    spec:
+      containers:
+      - name: minecraft
+        image: itzg/minecraft-server
+        ports:
+        - containerPort: 25565
+        env:
+        - name: EULA
+          value: "TRUE"
+        - name: VERSION
+          value: "1.20.4"
+        - name: VIEW_DISTANCE
+          value: "3"
+        - name: ONLINE_MODE
+          value: "FALSE"
+        - name: JVM_OPTS
+          value: >
+            -XX:+IgnoreUnrecognizedVMOptions
+            -XX:+UseG1GC
+            -XX:+ParallelRefProcEnabled
+            -XX:MaxGCPauseMillis=200
+            -XX:+UnlockExperimentalVMOptions
+            -XX:+DisableExplicitGC
+            -XX:+AlwaysPreTouch
+            -XX:G1HeapWastePercent=5
+            -XX:G1MixedGCCountTarget=4
+            -XX:G1MixedGCLiveThresholdPercent=90
+            -XX:G1RSetUpdatingPauseTimePercent=5
+            -XX:SurvivorRatio=32
+            -XX:+PerfDisableSharedMem
+            -XX:MaxTenuringThreshold=1
+            -XX:G1NewSizePercent=30
+            -XX:G1MaxNewSizePercent=40
+            -XX:G1HeapRegionSize=8M
+            -XX:G1ReservePercent=20
+            -XX:InitiatingHeapOccupancyPercent=15
+            -Dusing.aikars.flags=https://mcflags.emc.gs
+            -Daikars.new.flags=true
+        - name: MAX_PLAYERS
+          value: "2"
+        - name: SPAWN_PROTECTION
+          value: "2"
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+          limits:
+            cpu: "1700m"
+            memory: "3Gi"
