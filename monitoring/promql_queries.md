@@ -1,4 +1,3 @@
-```markdown
 ## Grafana 시각화 항목
 
 | 항목 | 설명 | Prometheus 쿼리 |
