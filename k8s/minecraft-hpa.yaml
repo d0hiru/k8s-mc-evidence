@@ -17,9 +17,4 @@ spec:
         target:
           type: Utilization
           averageUtilization: 50  # CPU 평균 사용률이 50%를 넘으면 파드 추가
-    - type: Resource
-      resource:
-        name: memory
-        target:
-          type: Utilization
-          averageUtilization: 75  # 메모리 평균 사용률이 75%를 넘으면 파드 추가
+
