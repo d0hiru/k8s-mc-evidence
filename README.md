@@ -32,7 +32,7 @@
 
 1. **기본 상태**  
    - Minecraft 서버 1개만 실행됨 (Pod 1개)  
-   - TPS 정상 유지
+   - CPU 사용률 안정적
 
 2. **트래픽 증가**  
    - 봇 접속 부하 유도  
@@ -42,9 +42,10 @@
    - Pod가 1개 → 2개 이상으로 자동 증가  
    - 로드밸런서가 트래픽 분산
 
-4. **TPS 회복 확인**  
-   - Grafana 대시보드에서 TPS 회복 및 Pod 증가 시각화
-
+4. **서버 안정화**  
+   - CPU 사용률 분산  
+   - Grafana에서 Pod 수 및 CPU 사용률 확인 가능
+     
 5. **부하 종료 → Pod 축소**  
    - CPU 사용률 하락  
    - 자동으로 Pod 수 축소
@@ -54,10 +55,12 @@
 ## 모니터링
 
 - **Grafana 대시보드**를 통해 다음 항목을 시각화함:
-  - TPS 그래프
   - Pod 수 변화
-  - CPU 사용률
-  - 봇 접속 수
+  - pod별 CPU 사용률
+  - 노드 전체 CPU 사용률 (CPU Busy)
+  - 시스템 부하 (Sys Load)
+  - 메모리 사용률 (RAM Used)
+  
 
 ---
 
@@ -79,9 +82,8 @@
 
 ## 주요 기술 스택
 
-- Kubernetes (kubeadm)
+- Kubernetes (kubeadm, minikube)
 - Docker
-- itzg/minecraft-server
 - HPA (Horizontal Pod Autoscaler)
 - Prometheus + Grafana
 - Node.js (Minecraft 봇)
