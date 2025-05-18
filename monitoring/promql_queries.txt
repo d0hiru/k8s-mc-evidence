@@ -1,0 +1,19 @@
+pod 개수
+kube_deployment_status_replicas{deployment="minecraft-deployment", namespace="default"}
+
+pod별 CPU 사용량
+sum by (pod) (
+  rate(container_cpu_usage_seconds_total{namespace="default", pod=~"minecraft.*"}[2m])
+)
+* 100
+
+CPU Busy
+100 * (1 - avg(rate(node_cpu_seconds_total{mode="idle", instance="$node"}[$__rate_interval])))
+
+Sys Load
+scalar(node_load1{instance="$node",job="$job"}) * 100 / count(count(node_cpu_seconds_total{instance="$node",job="$job"}) by (cpu))
+
+RAM Used
+(1 - (node_memory_MemAvailable_bytes{instance="$node", job="$job"} / node_memory_MemTotal_bytes{instance="$node", job="$job"})) * 100
+
+
